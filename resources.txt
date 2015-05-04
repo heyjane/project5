@@ -1,0 +1,19 @@
+Google Maps API tutorial: http://www.w3schools.com/googleapi/google_maps_basic.asp
+Google Developers Guides: https://developers.google.com/maps/documentation/javascript/examples/map-simple
+
+Search box: https://developers.google.com/maps/documentation/javascript/examples/places-searchbox
+
+Maps Icons Collection https://mapicons.mapsmarker.com
+
+http://learn.knockoutjs.com/#/?tutorial=collections
+
+http://webdesign.tutsplus.com/tutorials/getting-creative-with-the-google-maps-api--webdesign-13380
+
+http://www.w3schools.com/tags/ref_colorpicker.asp
+
+http://mydevice.io/devices/ (for screen size ideas)
+
+https://www.iconfinder.com
+
+
+
