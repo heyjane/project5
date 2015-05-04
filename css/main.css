@@ -9,6 +9,7 @@
     border: none;
     -webkit-box-shadow: 2px 2px 5px #9D9D9D;
     outline: none;
+    position: absolute;
 }
 
 #search-container {
@@ -18,7 +19,7 @@
 
 #search-nav {
     width: 280px;
-    max-height: 600px;
+    max-height: 480px;
     background-color: rgba(256,256,256,.8);
     overflow: scroll;
 }
@@ -27,6 +28,8 @@
     max-height: 480px;
     overflow: scroll;
     margin: 0 5px;
+    padding-top: 50px;
+
 }
 
 #arrow {

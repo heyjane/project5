@@ -20,8 +20,11 @@ function initialize() {
 		disableDefaultUI: true,
 		mapTypeControl:false,
 	};
-	if($(window).width() <=1080) {
+	if ($(window).width() <=600) {
 		mapOptions.zoom = 12;
+	}
+	else if ($(window).width() >=1020) {
+		mapOptions.zoom = 14;
 	}
 	if ($(window).width() < 850 || $(window).height() < 600) {
 		hideNav();
@@ -35,7 +38,7 @@ function initialize() {
 
 	function resetMap() {
 		var windowWidth = $(window).width();
-		if (windowWidth <= 1080) {
+		if (windowWidth <= 600) {
 			map.setZoom(12);
 			map.setCenter(mapOptions.center);
 		}
