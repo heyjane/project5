@@ -2,6 +2,7 @@ var map;
 var icon;
 var coffeeIcon = 'img/coffee-icon.png';
 var yogaIcon = 'img/yoga-icon.png';
+var foursquareIcon = "<img src='img/foursquare.png'>"
 var markersArray = [];
 
 function loadScript() {
@@ -72,6 +73,8 @@ var markers = [
 	lat: 38.903692,
 	longitude: -77.060135,
 	streetAddress: '1052 Thomas Jefferson St NW',
+	url: 'https://foursquare.com/v/baked--wired/49bfffd0f964a5203c551fe3',
+	venueId: '49bfffd0f964a5203c551fe3',
 	category: 'coffee',
 	info: 'Baked and Wired info window content here',
 	visible: ko.observable(true),
@@ -84,6 +87,8 @@ var markers = [
 	lat: 38.9136809,
 	longitude: -77.045109,
 	streetAddress: '1726 20th St NW',
+	url: 'https://foursquare.com/v/filter-coffeehouse--espresso-bar/4b9d3afcf964a520969b36e3',
+	venueId: '4b9d3afcf964a520969b36e3',
 	category: 'coffee',
 	info: 'Filter C&E Bar info window content here',
 	visible: ko.observable(true),
@@ -96,6 +101,8 @@ var markers = [
 	lat: 38.909793,
 	longitude: -77.064334,
 	streetAddress: '1519 Wisconsin Ave NW',
+	url: 'https://foursquare.com/v/yoga-del-sol/50e61588e4b0e433727bbc2f',
+	venueId: '50e61588e4b0e433727bbc2f',
 	category: 'yoga',
 	info: 'Yoga Del Sol info window content here',
 	visible: ko.observable(true),
@@ -108,6 +115,8 @@ var markers = [
 	lat: 38.904375,
 	longitude: -77.065466,
 	streetAddress: '1046 Potomac St NW',
+	url: 'https://foursquare.com/v/down-dog-power-yoga-llc/4af75357f964a5205e0822e3',
+	venueId: '4af75357f964a5205e0822e3',
 	category: 'yoga',
 	info: 'Down Dog Power Yoga info window content here',
 	visible: ko.observable(true),
@@ -120,6 +129,8 @@ var markers = [
 	lat: 38.903162,
 	longitude: -77.059702,
 	streetAddress: '1025 Thomas Jefferson St NW',
+	url: 'https://foursquare.com/v/core-power-georgetown/5114257945b0487b8219c664',
+	venueId: '5114257945b0487b8219c664',
 	category: 'yoga',
 	info: 'Core Power Georgetown info window content here',
 	visible: ko.observable(true),
@@ -129,9 +140,11 @@ var markers = [
 
 	{
 	name: 'Georgetown Yoga',
-	lat: 38.905488,
-	longitude: -77.057290,
-	streetAddress: '1025 Thomas Jefferson St NW',
+	lat: 38.905021,
+	longitude: -77.059824,
+	streetAddress: '2805 M St NW',
+	url: 'https://foursquare.com/v/georgetown-yoga/5238419311d23e8533a76df6',
+	venueId: '5238419311d23e8533a76df6',
 	category: 'yoga',
 	info: 'Georgetown Yoga info window content here',
 	visible: ko.observable(true),
@@ -143,7 +156,9 @@ var markers = [
 	name: 'La Colombe Torrefaction',
 	lat: 38.906951,
 	longitude: -77.024927,
-	streetAddress: '924 N St NW',
+	streetAddress: '924 N St NW Rear',
+	url: 'https://foursquare.com/v/la-colombe-torrefaction/512f9781183f26d8006f53cb',
+	venueId: '512f9781183f26d8006f53cb',
 	category: 'coffee',
 	info: 'La Colombe info window content here',
 	visible: ko.observable(true),
@@ -156,6 +171,8 @@ var markers = [
 	lat: 38.908364,
 	longitude: -77.031591,
 	streetAddress: '1333 14th St NW',
+	url: 'https://foursquare.com/v/slipstream/54413c6a498e5781a7b10fc6',
+	venueId: '54413c6a498e5781a7b10fc6',
 	category: 'coffee',
 	info: 'Slipstream info window content here',
 	visible: ko.observable(true),
@@ -180,8 +197,25 @@ function setMarkers(location) {
 			title: location[i].name,
 			icon: icon,
 		});
+		var tips = '';
+		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips&sort=recent&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20141231&m=foursquare';
+		var foursquareRequestTimeout = setTimeout(function() {
+			tips = 'No Foursquare tips available at this time.'
+		}, 8000);
+		$.ajax({
+			url: foursquareUrl,
+			dataType: "jsonp",
+			success: function (response){
+				console.log(response.response.tips.items[0]);
+				var tipList = response.response.tips.items;
+				for (var i=0; i < tipList.length; i++) {
+					tips = tips + '<br>' + tipList[i].text;
+				};
+			clearTimeout(foursquareRequestTimeout);
+			}
 
-		markers[i].contentString = location[i].info;
+		});
+		markers[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + tips + '<br>' + foursquareIcon;
 
 		var infowindow = new google.maps.InfoWindow({
 			content: markers[i].contentString
