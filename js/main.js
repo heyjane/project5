@@ -76,7 +76,7 @@ var markers = [
 	url: 'https://foursquare.com/v/baked--wired/49bfffd0f964a5203c551fe3',
 	venueId: '49bfffd0f964a5203c551fe3',
 	category: 'coffee',
-	info: 'Baked and Wired info window content here',
+	tips: '',
 	visible: ko.observable(true),
 	boolTest: true,
 	id: "nav0"
@@ -90,7 +90,7 @@ var markers = [
 	url: 'https://foursquare.com/v/filter-coffeehouse--espresso-bar/4b9d3afcf964a520969b36e3',
 	venueId: '4b9d3afcf964a520969b36e3',
 	category: 'coffee',
-	info: 'Filter C&E Bar info window content here',
+	tips: '',
 	visible: ko.observable(true),
 	boolTest: true,
 	id: "nav1"
@@ -104,7 +104,7 @@ var markers = [
 	url: 'https://foursquare.com/v/yoga-del-sol/50e61588e4b0e433727bbc2f',
 	venueId: '50e61588e4b0e433727bbc2f',
 	category: 'yoga',
-	info: 'Yoga Del Sol info window content here',
+	tips: '',
 	visible: ko.observable(true),
 	boolTest: true,
 	id: "nav2"
@@ -118,7 +118,7 @@ var markers = [
 	url: 'https://foursquare.com/v/down-dog-power-yoga-llc/4af75357f964a5205e0822e3',
 	venueId: '4af75357f964a5205e0822e3',
 	category: 'yoga',
-	info: 'Down Dog Power Yoga info window content here',
+	tips: '',
 	visible: ko.observable(true),
 	boolTest: true,
 	id: "nav3"
@@ -132,7 +132,7 @@ var markers = [
 	url: 'https://foursquare.com/v/core-power-georgetown/5114257945b0487b8219c664',
 	venueId: '5114257945b0487b8219c664',
 	category: 'yoga',
-	info: 'Core Power Georgetown info window content here',
+	tips: '',
 	visible: ko.observable(true),
 	boolTest: true,
 	id: "nav4"
@@ -146,7 +146,7 @@ var markers = [
 	url: 'https://foursquare.com/v/georgetown-yoga/5238419311d23e8533a76df6',
 	venueId: '5238419311d23e8533a76df6',
 	category: 'yoga',
-	info: 'Georgetown Yoga info window content here',
+	tips: '',
 	visible: ko.observable(true),
 	boolTest: true,
 	id: "nav5"
@@ -160,7 +160,7 @@ var markers = [
 	url: 'https://foursquare.com/v/la-colombe-torrefaction/512f9781183f26d8006f53cb',
 	venueId: '512f9781183f26d8006f53cb',
 	category: 'coffee',
-	info: 'La Colombe info window content here',
+	tips: '',
 	visible: ko.observable(true),
 	boolTest: true,
 	id: "nav6"
@@ -174,12 +174,13 @@ var markers = [
 	url: 'https://foursquare.com/v/slipstream/54413c6a498e5781a7b10fc6',
 	venueId: '54413c6a498e5781a7b10fc6',
 	category: 'coffee',
-	info: 'Slipstream info window content here',
+	tips: '',
 	visible: ko.observable(true),
 	boolTest: true,
 	id: "nav7"
 	}
 ];
+
 
 function setMarkers(location) {
 	for (i=0; i<location.length; i++){
@@ -190,15 +191,70 @@ function setMarkers(location) {
 		else if (location[i].category === "yoga") {
 			icon = yogaIcon
 		}
-
 		location[i].holdMarker = new google.maps.Marker({
 			position: new google.maps.LatLng(location[i].lat, location[i].longitude),
 			map: map,
 			title: location[i].name,
 			icon: icon,
 		});
+
 		var tips = '';
-		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips&sort=recent&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20141231&m=foursquare';
+		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips?sort=recent&limit=1&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
+		tips = function getTips(foursquareURL) {
+			$.getJSON(foursquareUrl)
+				.done(function(response){
+					tips = response.response.tips.items[0].text;
+					console.log(tips);
+					return tips;
+
+				})
+				.fail(function(){
+					tips = 'Unable to load tips at this time.';
+				});
+//				console.log(tips);
+			}();
+/*&&&&&&&
+		var tips;
+		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips?sort=recent&limit=1&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
+		function getTips(foursquareURL, callback) {
+			tips = '';
+			$.getJSON(foursquareUrl)
+				.done(function(response){
+					tips = response.response.tips.items[0].text;
+					callback(tips);
+					console.log(tips);
+				})
+				.fail(function(){
+					tips = 'Unable to load tips at this time.';
+				});
+				console.log(tips);
+			}
+&&&&*/
+
+/*
+		var tips;
+		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips?sort=recent&limit=1&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
+		function getTips(foursquareURL, callback) {
+			tips = '';
+			$.getJSON(foursquareUrl)
+				.done(function(response){
+					tips = response.response.tips.items[0].text;
+					callback(tips);
+				})
+				.fail(function(){
+					tips = 'Unable to load tips at this time.';
+					callback(tips);
+				});
+		}
+		getTips(foursquareUrl, function (tips) {
+
+			return tips;
+
+		});
+//console.log(tips);
+
+//		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips?sort=recent&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
+/*
 		var foursquareRequestTimeout = setTimeout(function() {
 			tips = 'No Foursquare tips available at this time.'
 		}, 8000);
@@ -206,19 +262,17 @@ function setMarkers(location) {
 			url: foursquareUrl,
 			dataType: "jsonp",
 			success: function (response){
-				console.log(response.response.tips.items[0]);
-				var tipList = response.response.tips.items;
-				for (var i=0; i < tipList.length; i++) {
-					tips = tips + '<br>' + tipList[i].text;
-				};
-			clearTimeout(foursquareRequestTimeout);
+				tips = response.response.tips.items[0].text;
+			},
+			error: function() {
+				tips = "No tips available at the moment.";
 			}
-
 		});
-		markers[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + tips + '<br>' + foursquareIcon;
-
+*/
+		console.log(tips);
+		location[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + tips + '<p>' + foursquareIcon;
 		var infowindow = new google.maps.InfoWindow({
-			content: markers[i].contentString
+			content: location[i].contentString
 		});
 
 		new google.maps.event.addListener(location[i].holdMarker, 'click', (function(marker, i) {
