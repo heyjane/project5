@@ -198,21 +198,42 @@ function setMarkers(location) {
 			icon: icon,
 		});
 
-		var tips = '';
+		location[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ';
+		var infowindow = new google.maps.InfoWindow({
+			content: location[i].contentString
+		});
+
+		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips?sort=recent&limit=1&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
+		tips = function getTips() {
+			$.getJSON(foursquareUrl)
+				.done(function(response){
+					location[i].contentString += response.response.tips.items[0].text;
+				})
+				.fail(function(){
+					location[i].contentString += 'Unable to load the latest buzz right now.';
+				});
+		}();
+
+/*
+		location[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ';
+		var contentString = location[i].contentString;
+		var infowindow = new google.maps.InfoWindow({
+			content: contentString
+		});
+
 		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips?sort=recent&limit=1&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
 		tips = function getTips(foursquareURL) {
 			$.getJSON(foursquareUrl)
 				.done(function(response){
-					tips = response.response.tips.items[0].text;
-					console.log(tips);
-					return tips;
-
+					contentString += response.response.tips.items[0].text;
+					console.log(contentString);
 				})
 				.fail(function(){
-					tips = 'Unable to load tips at this time.';
+					contentString += 'Unable to load the latest buzz right now.';
 				});
-//				console.log(tips);
-			}();
+		}();
+*/
+
 /*&&&&&&&
 		var tips;
 		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips?sort=recent&limit=1&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
@@ -269,11 +290,7 @@ function setMarkers(location) {
 			}
 		});
 */
-		console.log(tips);
-		location[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + tips + '<p>' + foursquareIcon;
-		var infowindow = new google.maps.InfoWindow({
-			content: location[i].contentString
-		});
+
 
 		new google.maps.event.addListener(location[i].holdMarker, 'click', (function(marker, i) {
 			return function () {

@@ -17,6 +17,9 @@ https://www.iconfinder.com
 
 http://encosia.com/3-reasons-why-you-should-let-google-host-jquery-for-you/
 
+tackoverflow.com/questions/14220321/how-to-return-the-response-from-an-asynchronous-call
+
+
 
 
 
