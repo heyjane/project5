@@ -1,3 +1,4 @@
+var tips = [];
 var map;
 var icon;
 var coffeeIcon = 'img/coffee-icon.png';
@@ -198,21 +199,25 @@ function setMarkers(location) {
 			icon: icon,
 		});
 
-		location[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ';
+		location[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + tips[i];
 		var infowindow = new google.maps.InfoWindow({
 			content: location[i].contentString
 		});
 
 		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + location[i].venueId + '/tips?sort=recent&limit=1&client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
-		tips = function getTips() {
+		function getTips() {
 			$.getJSON(foursquareUrl)
 				.done(function(response){
-					location[i].contentString += response.response.tips.items[0].text;
+					tip = response.response.tips.items[0].text;
+					tips.push (tip);
 				})
 				.fail(function(){
-					location[i].contentString += 'Unable to load the latest buzz right now.';
+					tip = 'Unable to load the latest buzz right now.';
+					tips.push(tip);
 				});
-		}();
+		};
+		getTips();
+
 
 /*
 		location[i].contentString = location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ';
@@ -294,7 +299,7 @@ function setMarkers(location) {
 
 		new google.maps.event.addListener(location[i].holdMarker, 'click', (function(marker, i) {
 			return function () {
-				infowindow.setContent(location[i].contentString);
+				infowindow.setContent(location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + tips[i]);
 				infowindow.open(map,this);
 				var windowWidth = $(window).width();
 				if(windowWidth <= 1080) {
@@ -310,7 +315,7 @@ function setMarkers(location) {
 		var searchNav = $('#nav' + i);
 		searchNav.click((function(marker, i) {
 			return function() {
-				infowindow.setContent(location[i].contentString);
+				infowindow.setContent(location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + tips[i]);
 				infowindow.open(map,marker);
 				map.setZoom(16);
 				map.setCenter(marker.getPosition());
