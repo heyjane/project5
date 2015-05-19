@@ -22,7 +22,7 @@ smaller screens, the navigation list is hidden by default.
 You can reset the map center/zoom by clicking on the RESET MAP button in the lower
 right corner.
 
-Click <a href="https://github.com/heyjane/project5">here</a> to access the site.
+Click <a href="https://heyjane.github.io/project5/">here</a> to access the site.
 
 
 
