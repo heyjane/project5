@@ -1,7 +1,6 @@
 # Georgetown Coffee and Yoga
 
-I created this project for my daughter, Claire, who recently relocated to 
-Georgetown in Washington, D.C.
+I created this project for the Udacity Front-End Nanodegree program.  This project was inspired by my daughter, Claire, who recently relocated to Georgetown in Washington, D.C.
 
 You can use this interactive map to search for the most popular wi-fi enabled coffeeshops 
 and yoga/pilates studios in the Georgetown area:
