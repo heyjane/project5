@@ -3,8 +3,8 @@
 }
 
 #input {
-    margin: 15px 0 5px 20px;
-    width: 83%;
+    margin: 10px 0 5px 5px;
+    width: 195%;
     height: 35px;
     font-size: 17px;
     font-family: helvetica, sans-serif;
@@ -21,17 +21,17 @@
 }
 
 #search-nav {
-    width: 280px;
-    max-height: 480px;
+    width: 230px;
+    max-height: 360px;
     background-color: rgba(256,256,256,.8);
     overflow: scroll;
 }
 
 #scroller {
-    max-height: 480px;
+    max-height: 360px;
     overflow: scroll;
     margin: 0 5px;
-    padding-top: 50px;
+    padding-top: 45px;
 
 }
 

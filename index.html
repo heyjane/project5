@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
+<!--Add some CSS styling here to improve performance-->
     <style>
         * {box-sizing:border-box;}
         *:visited {color: #7D7D7D}
@@ -20,10 +21,12 @@
         a {text-decoration: none; color: #7D7D7D;}
         hr { margin: 10px 0 0 0; color: #331A00; border-color: #331A00;}
     </style>
+    <!--Add full-screen map-->
     <div id="map-canvas"></div>
+    <!--Add search bar and navigation list with bindings to markers-->
     <div id="search-container">
         <div id="search-nav">
-            <input id="input" placeholder="Search for 'yoga' or 'coffee'..." type="input" data-bind="textInput: query, valueUpdate: 'keydown'" autocomplete="off"></input>
+            <input id="input" placeholder="Search for the best 'yoga' or 'coffee' in Georgetown..." type="input" data-bind="textInput: query, valueUpdate: 'keydown'" autocomplete="off"></input>
             <div id="scroller">
                 <ul data-bind="template: {name: 'marker', foreach:markers}">
                 </ul>
@@ -39,15 +42,16 @@
                 </script>
             </div>
         </div>
+        <!--Add arrow to hide/show navigation list-->
         <div id="arrow-container">
             <img id="arrow" src="img/up-arrow.png" alt="arrow image">
         </div>
     </div>
-
+    <!--Add button to reset map-->
     <div class="reset-container">
         <button id="reset">Reset Map</button>
     </div>
-
+<!--Load scripts-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script type="text/javascript" src="js/knockout-3.3.0.js"></script>
     <script async type="text/javascript" src="js/main.js"></script>
