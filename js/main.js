@@ -5,7 +5,7 @@ var map; //map variable
 var icon; //variable to store appropriate icon (coffee or yoga)
 var coffeeIcon = 'img/coffee-icon.png';
 var yogaIcon = 'img/yoga-icon.png';
-var foursquareIcon = "<img src='img/foursquare.png'>" //acknowledgment required by Foursquare
+var foursquareIcon = "<img src='img/foursquare.png'>";//acknowledgment required by Foursquare
 
 //Yoga and coffee shop locations/data for Georgetown, D.C.
 var markers = [
@@ -199,12 +199,22 @@ function getTips() {
 		var foursquareUrl = 'https://api.foursquare.com/v2/venues/' + markers[i].venueId + '?client_id=YU001YIMFNXZGOX3W3VDKCXA3ZLUXDODR3BISZQQ4QUQCUYX&client_secret=QF0DY534VR4MD2HUYM4CIP204L0W3BAJGOOIDUON5HSQXXBF&v=20150504';
 		$.getJSON(foursquareUrl)
 			.done(function(response){
-				var tipId = response.response.venue.id;
-				var tipText = response.response.venue.tips.groups[0].items[0].text;
-				var tips = tipId + '%' + tipText;
+				var tipText,
+					tipId,
+					tips;
+				tipId = response.response.venue.id;
+				if( response.response.venue.tips.count > 0) {
+					tipText = response.response.venue.tips.groups[0].items[0].text;
+				} else {
+					tipText = "No tips available for this location yet...";
+				}
+				tips = tipId + '%' + tipText;
 				getTipsCallback(tips);
-				})
-		};
+			})
+			.fail(function(jqXHR, textStatus, errorThrown) {
+				alert('Error connecting to Foursquare: ' + textStatus);
+			});
+		}
 	}
 
 // Update data model (markers array) with tip from Foursquare by matching venue ids
@@ -226,7 +236,7 @@ function loadScript() {
   script.type = 'text/javascript';
   script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp' +
       '&signed_in=false&callback=initialize';
-  document.body.appendChild(script);
+    document.body.appendChild(script);
 }
 
 window.onload = loadScript;
@@ -235,7 +245,8 @@ window.onload = loadScript;
 function initialize() {
 	var mapOptions = {
 		zoom: 13,
-		center: new google.maps.LatLng(38.906416, -77.065831),
+		center: new google.maps.LatLng(38.94, -77.065831),
+//		center: new google.maps.LatLng(38.906416, -77.065831),
 		disableDefaultUI: true,
 		mapTypeControl:false,
 	};
@@ -293,10 +304,10 @@ function setMarkers(location) {
 	for (i=0; i<location.length; i++){
 
 		if (location[i].category === "coffee") {
-			icon = coffeeIcon
+			icon = coffeeIcon;
 		}
 		else if (location[i].category === "yoga") {
-			icon = yogaIcon
+			icon = yogaIcon;
 		}
 		location[i].holdMarker = new google.maps.Marker({
 			position: new google.maps.LatLng(location[i].lat, location[i].longitude),
@@ -306,11 +317,31 @@ function setMarkers(location) {
 		});
 
 		var infowindow = new google.maps.InfoWindow({
-			maxWidth: 200
-		});
+			maxWidth: 200});
+
+/* Offset center of map to allow full
+   visibility of infowindow and markers */
+   		function offsetCenter(latlng,offsetx,offsety) {
+   			var scale = Math.pow(2, map.getZoom());
+   			var nw = new google.maps.LatLng(
+   				map.getBounds().getNorthEast().lat(),
+   				map.getBounds().getSouthWest().lng()
+   			);
+
+   			var pixelCenter = map.getProjection().fromLatLngToPoint(latlng);
+   			var pixelOffset = new google.maps.Point((offsetx/scale) ||0, (offsety/scale) ||0);
+
+   			var newPixelCenter = new google.maps.Point(
+   				pixelCenter.x - pixelOffset.x,
+   				pixelCenter.y + pixelOffset.y
+   			);
+
+   			var newCenter = map.getProjection().fromPointToLatLng(newPixelCenter);
+   			return newCenter;
+   		}
 
 //If marker is clicked, zoom and center map to clicked location and open info window.
-		new google.maps.event.addListener(location[i].holdMarker, 'click', (function(marker, i) {
+		google.maps.event.addListener(location[i].holdMarker, 'click', (function(marker, i) {
 			return function () {
 				infowindow.setContent(location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + location[i].tips + '<br>' + foursquareIcon);
 				infowindow.open(map,this);
@@ -321,7 +352,7 @@ function setMarkers(location) {
 				else {
 					map.setZoom(16);
 				}
-				map.setCenter(marker.getPosition());
+				map.setCenter(offsetCenter(marker.getPosition(), 10, -200));
 			};
 		})(location[i].holdMarker, i));
 
@@ -332,7 +363,8 @@ function setMarkers(location) {
 				infowindow.setContent(location[i].name + '<br>' + location[i].streetAddress + '<br>' + '<a href = ' + location[i].url + ' id="fslink">Click for more info</a>' + '<p>The latest buzz: ' + location[i].tips + '<br>' + foursquareIcon);
 				infowindow.open(map,marker);
 				map.setZoom(16);
-				map.setCenter(marker.getPosition());
+				map.setCenter(offsetCenter(marker.getPosition(), 10, -200));
+
 			};
 		})(location[i].holdMarker, i));
 	}
@@ -369,7 +401,7 @@ $("#input").keyup(function() {
 var isNavVisible = true;
 function noNav() {
 	$("#search-nav").animate({
-		height: 65,
+		height: 25,
 	}, 500);
 	$("#arrow").attr("src", "img/down-arrow.png");
 	isNavVisible = false;
@@ -382,14 +414,14 @@ function yesNav() {
 		$("#search-nav").animate({
 			height: scrollerHeight - 100,
 		}, 500, function() {
-			$(this).css('height', 'auto').css("max-height", 439);
+			$(this).css('height', 'auto').css("max-height", 100);
 		});
 	}
 	else {
 		$("#search-nav").animate({
 			height: scrollerHeight,
 		}, 500, function() {
-			$(this).css('height', 'auto').css("max-height", 549);
+			$(this).css('height', 'auto').css("max-height", 300);
 		});
 	}
 	$("#arrow").attr("src", "img/up-arrow.png");

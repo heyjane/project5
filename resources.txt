@@ -37,6 +37,12 @@ http://stackoverflow.com/questions/14220321/how-to-return-the-response-from-an-a
 
 https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
 
+http://stackoverflow.com/questions/489340/vertically-align-text-next-to-an-image
+
+Offsetting the map center: http://stackoverflow.com/questions/10656743/how-to-offset-the-center-point-in-google-maps-api-v3
+
+Detecting offline status: https://github.com/HubSpot/offline
+
 "HTML & CSS: design and build websites" by Jon Duckett
 "JAVASCRIPT & JQUERY: interactive front-end web development" by Jon Duckett
 
