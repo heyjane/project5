@@ -1,17 +1,19 @@
 Hello!
 
-***Updates for May 21, 2015****
+**************Updates for May 21, 2015****************
 Based on the great feedback from the code reviewer, I
 updated this project with the following enhancements:
 - I offset the center of the map so the infowindows were
   not obscured by the search bar or nav list.
 - I resized the search bar and nav list for different
   screen sizes.
-- I added graceful recovery notes from failures.
+- I added graceful recoveries from failures.
 - I cleaned up the code.
 
 I experimented with moving the nav list to the bottom, but on very small screens, the search bar still obscured the infowindows.  I decided the best way to resolve the issue was
-to offset the map center.  This is a bit trickier than it seems--it requires converting the lat/long to points and adjusting for the map zoom; then, reconverting to lat/long for the new map center.  I think this is the cleanest solution.  Once I moved the map center, the infowindows displayed clearly on all screen sizes, and it made sense to move the nav list back up to the top of the page (where it looks better anyway;)  I really appreciate the great feedback--thank you!
+to offset the map center.  This is a bit trickier than it seems--it requires converting the lat/long to points and adjusting for the map zoom; then, reconverting to lat/long for the new map center.  I think this is the cleanest solution.  Once I moved the map center, the infowindows displayed clearly on all screen sizes, and it made sense to move the nav list back up to the top of the page (where it looks better anyway;)
+
+I really appreciate the great feedback--thank you!
 *****************************************************
 
 I chose this project because my daughter just moved to Georgetown.  She like to work/read in coffee shops and do pilates and yoga, so I researched the best coffeehouses with wi-fi and yoga studios using her apartment to center the map.  As a followup project, I'm going to create a map of Chicago locations featured in major films (after I finish the final FEND project).
